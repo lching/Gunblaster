@@ -9,7 +9,6 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
-import com.gunblaster.collision.BoundingBox;
 import com.gunblaster.collision.Collision;
 import com.gunblaster.component.Component;
 import com.gunblaster.world.World;
@@ -38,8 +37,6 @@ public class Entity {
         speed = 0.1f;
         alpha = 1.0f;
         components = new ArrayList<Component>();
-        collision = new BoundingBox();
-        collision.setOwner(this);
     }
 
     public String getId() {

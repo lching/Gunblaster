@@ -6,10 +6,12 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.tiled.TiledMap;
 
+import com.gunblaster.collision.BoundingBox;
 import com.gunblaster.component.custom.ControlMovement;
+import com.gunblaster.entity.model.Border;
 import com.gunblaster.entity.model.Player;
-import com.gunblaster.entity.model.Wall;
 import com.gunblaster.world.World;
 
 public class GameplayState extends BasicGameState {
@@ -17,7 +19,7 @@ public class GameplayState extends BasicGameState {
     private int id = -1;
     private World world = null;
     private Player player = null;
-    private Wall wall = null;
+    private TiledMap borderMap; 
 
     public GameplayState(int id) {
         this.id = id;
@@ -35,15 +37,28 @@ public class GameplayState extends BasicGameState {
     public void init(GameContainer container, StateBasedGame game)
             throws SlickException {
         player = new Player("PLAYER");
-        wall = new Wall("WALL");
         world = new World("Level 1");
+        borderMap = new TiledMap("data/maps/border.tmx");
 
         player.setSpeed(0.2f);
-        player.setPosition(new Vector2f(385, 550));
-        //player.addComponent(new ControlMovement("PLAYER_MOVEMENT"));
+        player.setPosition(new Vector2f(385, 520));
+        player.addComponent(new ControlMovement("PLAYER_MOVEMENT"));
+        player.setCollision(new BoundingBox());
+
+        for (int x = 0; x < borderMap.getWidth(); x++) {
+            for (int y = 0; y < borderMap.getHeight(); y++) {
+                int tileId = borderMap.getTileId(x, y, 0);
+                String value = borderMap.getTileProperty(tileId, "border", "false");
+                if (value.equalsIgnoreCase("true")) {
+                    Border border = new Border("BORDER");
+                    border.setPosition(new Vector2f(x*border.getWidth(), y*border.getHeight()));
+                    world.addEntity(border);
+                }
+            }
+        }
 
         world.addEntity(player);
-        world.addEntity(wall);
+        System.out.println(world.getEntities().size());
     }
 
     @Override
@@ -56,6 +71,7 @@ public class GameplayState extends BasicGameState {
     public void update(GameContainer container, StateBasedGame game, int delta)
             throws SlickException {
         world.update(container, game, delta);
+        
     }
 
 }

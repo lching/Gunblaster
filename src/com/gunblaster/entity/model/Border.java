@@ -3,19 +3,16 @@ package com.gunblaster.entity.model;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import com.gunblaster.collision.BoundingBox;
 import com.gunblaster.entity.Entity;
 
-public class Player extends Entity {
+public class Border extends Entity {
 
-    public Player(String id) {
+    public Border(String id) {
         super(id);
-
-        setType(Entity.PLAYER);
-        setCollision(new BoundingBox());
+        setType(Entity.SOLID);
 
         try {
-            setImage(new Image("data/images/player.png"));
+            setImage(new Image("data/images/border.png"));
         } catch (SlickException e) {
             e.printStackTrace();
         }
