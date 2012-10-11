@@ -40,7 +40,7 @@ public class GameplayState extends BasicGameState {
 
         player.setSpeed(0.2f);
         player.setPosition(new Vector2f(385, 550));
-        player.addComponent(new ControlMovement("PLAYER_MOVEMENT"));
+        //player.addComponent(new ControlMovement("PLAYER_MOVEMENT"));
 
         world.addEntity(player);
         world.addEntity(wall);
