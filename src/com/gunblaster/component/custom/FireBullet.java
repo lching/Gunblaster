@@ -22,7 +22,7 @@ public class FireBullet extends Component {
         this.id = id;
         bullets = new ArrayList<Bullet>();
         this.bullet = bullet;
-        timer = 0;
+        timer = bullet.getTimer();
     }
 
     @Override

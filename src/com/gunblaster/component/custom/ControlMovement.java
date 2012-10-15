@@ -27,18 +27,21 @@ public class ControlMovement extends Component {
                 position.y -= speed * delta;
             }
         }
+
         if (input.isKeyDown(Input.KEY_UP)) {
             position.y -= speed * delta;
             if (owner.hit(World.SOLID) != null) {
                 position.y += speed * delta;
             }
         }
+
         if (input.isKeyDown(Input.KEY_RIGHT)) {
             position.x += speed * delta;
             if (owner.hit(World.SOLID) != null) {
                 position.x -= speed * delta;
             }
         }
+
         if (input.isKeyDown(Input.KEY_LEFT)) {
             position.x -= speed * delta;
             if (owner.hit(World.SOLID) != null) {
