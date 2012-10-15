@@ -12,6 +12,7 @@ import com.gunblaster.component.custom.ControlMovement;
 import com.gunblaster.component.custom.FireBullet;
 import com.gunblaster.entity.model.Bullet;
 import com.gunblaster.entity.model.Player;
+import com.gunblaster.logger.Logger;
 import com.gunblaster.world.World;
 
 public class GameplayState extends BasicGameState {
@@ -35,15 +36,14 @@ public class GameplayState extends BasicGameState {
     @Override
     public void init(GameContainer container, StateBasedGame game)
             throws SlickException {
-        player = new Player("PLAYER");
+        player = new Player();
         world = new World("Level 1");
 
         player.setSpeed(0.2f);
         player.setPosition(new Vector2f(385, 520));
         player.setHitDetection(new BoundingBox());
-        player.setBullet(new Bullet("Player Bullet"));
         player.addComponent(new ControlMovement("PLAYER_MOVEMENT"));
-        player.addComponent(new FireBullet());
+        player.addComponent(new FireBullet("PLAYER_BULLET", new Bullet()));
 
         world.addEntity(player);
     }
@@ -58,6 +58,7 @@ public class GameplayState extends BasicGameState {
     public void update(GameContainer container, StateBasedGame game, int delta)
             throws SlickException {
         world.update(container, game, delta);
+        Logger.log("Size => " + world.getEntities().size());
     }
 
 }

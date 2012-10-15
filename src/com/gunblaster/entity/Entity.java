@@ -6,39 +6,31 @@ import java.util.List;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 import com.gunblaster.collision.HitDetection;
 import com.gunblaster.component.Component;
-import com.gunblaster.entity.model.Bullet;
 import com.gunblaster.world.World;
 
 public class Entity {
 
-    private String id;
-    private Vector2f position;
-    private float scale;
-    private float speed;
-    private float alpha;
-    private Image image;
-    private List<Component> components;
-    private String type;
-    private HitDetection hitDetection;
-    private World world;
+    protected Vector2f position;
+    protected float scale;
+    protected float speed;
+    protected float alpha;
+    protected Image image;
+    protected List<Component> components;
+    protected String type;
+    protected HitDetection hitDetection;
+    protected World world;
 
-    public Entity(String id) {
-        this.id = id;
+    public Entity() {
         position = new Vector2f(0, 0);
         scale = 1;
         speed = 0.1f;
         alpha = 1.0f;
         components = new ArrayList<Component>();
-    }
-
-    public String getId() {
-        return id;
     }
 
     public Vector2f getPosition() {
@@ -140,6 +132,7 @@ public class Entity {
 
     public void addComponent(Component component) {
         component.setOwner(this);
+        component.init();
         components.add(component);
     }
 

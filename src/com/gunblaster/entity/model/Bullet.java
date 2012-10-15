@@ -1,5 +1,7 @@
 package com.gunblaster.entity.model;
 
+import org.newdawn.slick.SlickException;
+
 import com.gunblaster.entity.Entity;
 import com.gunblaster.world.World;
 
@@ -8,8 +10,7 @@ public class Bullet extends Entity {
     private Entity owner;
     private boolean fired;
 
-    public Bullet(String id) {
-        super(id);
+    public Bullet() {
         setType(World.BULLET);
         fired = false;
     }
@@ -28,6 +29,14 @@ public class Bullet extends Entity {
 
     public void setFired(boolean fired) {
         this.fired = fired;
+    }
+
+    public void destroy() {
+        try {
+            super.image.destroy();
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
     }
 
 }
