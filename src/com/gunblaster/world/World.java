@@ -12,11 +12,19 @@ import com.gunblaster.entity.Entity;
 
 public class World {
 
+    public static final String SOLID = "Solid";
+    public static final String BULLET = "Bullet";
+    public static final String PLAYER = "Player";
+    public static final String BORDER = "Border";
+    public static final String ENEMY = "Enemy";
+
     private String name;
     private List<Entity> entities;
+    private List<Entity> temp;
 
     public World(String name) {
         this.name = name;
+        temp = new ArrayList<Entity>();
         entities = new ArrayList<Entity>();
     }
 
@@ -26,7 +34,7 @@ public class World {
 
     public void addEntity(Entity entity) {
         entity.setWorld(this);
-        entities.add(entity);
+        temp.add(entity);
     }
 
     public List<Entity> getEntities() {
@@ -54,6 +62,12 @@ public class World {
 
     public void update(GameContainer container, StateBasedGame game, int delta)
             throws SlickException {
+        for (Entity entity : temp) {
+            entities.add(entity);
+        }
+
+        temp.clear();
+
         for (Entity entity : entities) {
             entity.update(container, game, delta);
         }

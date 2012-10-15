@@ -6,7 +6,7 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 import com.gunblaster.component.Component;
-import com.gunblaster.entity.Entity;
+import com.gunblaster.world.World;
 
 public class ControlMovement extends Component {
 
@@ -23,25 +23,25 @@ public class ControlMovement extends Component {
         //Logic for controls
         if (input.isKeyDown(Input.KEY_DOWN)) {
             position.y += speed * delta;
-            if (owner.getCollision().collide(Entity.SOLID) != null) {
+            if (owner.hit(World.SOLID) != null) {
                 position.y -= speed * delta;
             }
         }
         if (input.isKeyDown(Input.KEY_UP)) {
             position.y -= speed * delta;
-            if (owner.getCollision().collide(Entity.SOLID) != null) {
+            if (owner.hit(World.SOLID) != null) {
                 position.y += speed * delta;
             }
         }
         if (input.isKeyDown(Input.KEY_RIGHT)) {
             position.x += speed * delta;
-            if (owner.getCollision().collide(Entity.SOLID) != null) {
+            if (owner.hit(World.SOLID) != null) {
                 position.x -= speed * delta;
             }
         }
         if (input.isKeyDown(Input.KEY_LEFT)) {
             position.x -= speed * delta;
-            if (owner.getCollision().collide(Entity.SOLID) != null) {
+            if (owner.hit(World.SOLID) != null) {
                 position.x += speed * delta;
             }
         }
