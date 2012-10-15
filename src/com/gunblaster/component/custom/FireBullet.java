@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -16,38 +14,36 @@ import com.gunblaster.entity.model.Bullet;
 public class FireBullet extends Component {
 
     private List<Bullet> bullets;
+    private Bullet bullet;
     private Bullet removable;
-    private Image image;;
+    private int timer;
 
     public FireBullet(String id, Bullet bullet) {
         this.id = id;
         bullets = new ArrayList<Bullet>();
-    }
-
-    @Override
-    public void init() {
-        try {
-            image = new Image("data/images/bullet.png");
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
+        this.bullet = bullet;
+        timer = 0;
     }
 
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) {
         Input input = container.getInput();
 
-        if (input.isKeyPressed(Input.KEY_SPACE)) {
-            Bullet bullet = new Bullet();
-            bullet.setOwner(this.owner);
-            bullet.setPosition(new Vector2f(owner.getPosition()));
-            bullet.setSpeed(1.0f);
-            bullet.setImage(image);
-            bullet.setFired(true);
-            bullets.add(bullet);
+        if (timer <= bullet.getTimer()) {
+            timer += delta;
+        } 
 
-            for (Bullet b : bullets) {
-                owner.getWorld().addEntity(b);
+        if (input.isKeyPressed(Input.KEY_SPACE) || input.isKeyDown(Input.KEY_SPACE)) {
+            if (timer/bullet.getTimer() == 1) {
+                Bullet bullet = new Bullet();
+                bullet.setPosition(new Vector2f(owner.getPosition()));
+                bullet.setSpeed(this.bullet.getSpeed());
+                bullet.setImage(this.bullet.getImage());
+                bullet.setFired(true);
+                bullets.add(bullet);
+
+                owner.getWorld().addEntity(bullet);
+                timer = 0;
             }
         }
 
@@ -58,10 +54,10 @@ public class FireBullet extends Component {
 
             if (bullet.getPosition().getY() < 0) {
                 removable = bullet;
+                removable.destroy();
             }
         }
 
-        owner.getWorld().removeEntity(removable);
         bullets.remove(removable);
     }
 

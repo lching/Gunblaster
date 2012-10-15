@@ -2,8 +2,8 @@ package com.gunblaster.state;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -36,14 +36,20 @@ public class GameplayState extends BasicGameState {
     @Override
     public void init(GameContainer container, StateBasedGame game)
             throws SlickException {
-        player = new Player();
+        player = new Player(385, 520);
+        Bullet bullet = new Bullet();
         world = new World("Level 1");
 
+        player.setImage(new Image("data/images/player.png"));
         player.setSpeed(0.2f);
-        player.setPosition(new Vector2f(385, 520));
         player.setHitDetection(new BoundingBox());
+
+        bullet.setImage(new Image("data/images/bullet.png"));
+        bullet.setSpeed(1.0f);
+        bullet.setTimer(300);
+        
         player.addComponent(new ControlMovement("PLAYER_MOVEMENT"));
-        player.addComponent(new FireBullet("PLAYER_BULLET", new Bullet()));
+        player.addComponent(new FireBullet("PLAYER_BULLET", bullet));
 
         world.addEntity(player);
     }

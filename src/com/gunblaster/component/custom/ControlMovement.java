@@ -15,11 +15,6 @@ public class ControlMovement extends Component {
     }
 
     @Override
-    public void init() {
-        
-    }
-
-    @Override
     public void update(GameContainer container, StateBasedGame game, int delta) {
         Vector2f position = owner.getPosition();
         float speed = owner.getSpeed();

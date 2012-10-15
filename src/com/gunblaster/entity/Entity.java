@@ -33,6 +33,11 @@ public class Entity {
         components = new ArrayList<Component>();
     }
 
+    public Entity(float x, float y) {
+        this();
+        position = new Vector2f(x, y);
+    }
+
     public Vector2f getPosition() {
         return position;
     }
@@ -132,7 +137,6 @@ public class Entity {
 
     public void addComponent(Component component) {
         component.setOwner(this);
-        component.init();
         components.add(component);
     }
 
@@ -144,6 +148,10 @@ public class Entity {
         }
 
         return null;
+    }
+
+    public void destroy() {
+        world.removeEntity(this);
     }
 
     public void update(GameContainer container, StateBasedGame game, int delta) {
