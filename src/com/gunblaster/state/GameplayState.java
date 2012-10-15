@@ -46,7 +46,6 @@ public class GameplayState extends BasicGameState {
         player.addComponent(new FireBullet());
 
         world.addEntity(player);
-        world.addEntity(player.getBullet());
     }
 
     @Override

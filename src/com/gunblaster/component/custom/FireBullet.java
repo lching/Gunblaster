@@ -27,6 +27,7 @@ public class FireBullet extends Component {
         if (input.isKeyPressed(Input.KEY_SPACE)) {
             bullet.setFired(true);
             position = new Vector2f(player.getPosition());
+            owner.getWorld().addEntity(bullet);
         }
 
         if (bullet.isFired()) {

@@ -20,9 +20,11 @@ public class World {
 
     private String name;
     private List<Entity> entities;
+    private List<Entity> temp;
 
     public World(String name) {
         this.name = name;
+        temp = new ArrayList<Entity>();
         entities = new ArrayList<Entity>();
     }
 
@@ -32,7 +34,7 @@ public class World {
 
     public void addEntity(Entity entity) {
         entity.setWorld(this);
-        entities.add(entity);
+        temp.add(entity);
     }
 
     public List<Entity> getEntities() {
@@ -60,6 +62,12 @@ public class World {
 
     public void update(GameContainer container, StateBasedGame game, int delta)
             throws SlickException {
+        for (Entity entity : temp) {
+            entities.add(entity);
+        }
+
+        temp.clear();
+
         for (Entity entity : entities) {
             entity.update(container, game, delta);
         }
