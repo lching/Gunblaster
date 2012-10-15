@@ -6,18 +6,16 @@ import java.util.List;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
-import com.gunblaster.collision.Collision;
+import com.gunblaster.collision.HitDetection;
 import com.gunblaster.component.Component;
+import com.gunblaster.entity.model.Bullet;
 import com.gunblaster.world.World;
 
 public class Entity {
-
-    public static final String SOLID = "Solid";
-    public static final String BULLET = "Bullet";
-    public static final String PLAYER = "Player";
 
     private String id;
     private Vector2f position;
@@ -27,7 +25,7 @@ public class Entity {
     private Image image;
     private List<Component> components;
     private String type;
-    private Collision collision;
+    private HitDetection hitDetection;
     private World world;
 
     public Entity(String id) {
@@ -107,13 +105,21 @@ public class Entity {
         return position.getY();
     }
 
-    public Collision getCollision() {
-        return collision;
+    public void setHitDetection(HitDetection hitDetection) {
+        hitDetection.setOwner(this);
+        this.hitDetection = hitDetection;
     }
 
-    public void setCollision(Collision collision) {
-        collision.setOwner(this);
-        this.collision = collision;
+    public boolean hasHitDetection() {
+        return hitDetection != null;
+    }
+
+    public Entity hit(String type) {
+        if (hasHitDetection()) {
+            return hitDetection.hit(type);
+        }
+
+        return null;
     }
 
     public void setVisible(boolean visible) {

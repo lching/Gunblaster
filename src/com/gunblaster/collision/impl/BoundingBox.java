@@ -1,10 +1,11 @@
-package com.gunblaster.collision;
+package com.gunblaster.collision.impl;
 
 import java.util.List;
 
+import com.gunblaster.collision.HitDetection;
 import com.gunblaster.entity.Entity;
 
-public class BoundingBox extends Collision {
+public class BoundingBox extends HitDetection {
 
     private boolean topCollide;
     private boolean bottomCollide;
@@ -12,7 +13,7 @@ public class BoundingBox extends Collision {
     private boolean rightCollide;
 
     @Override
-    public Entity collide(String type) {
+    public Entity hit(String type) {
         List<Entity> entities = owner.getWorld().getEntities(type);
         float ownerTop = owner.getY();
         float ownerBottom = owner.getY() + owner.getHeight();
@@ -34,12 +35,6 @@ public class BoundingBox extends Collision {
         }
 
         return null;
-    }
-
-    @Override
-    public void collideResponse() {
-        // TODO Auto-generated method stub
-        
     }
 
 }

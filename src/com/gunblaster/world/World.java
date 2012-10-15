@@ -12,6 +12,12 @@ import com.gunblaster.entity.Entity;
 
 public class World {
 
+    public static final String SOLID = "Solid";
+    public static final String BULLET = "Bullet";
+    public static final String PLAYER = "Player";
+    public static final String BORDER = "Border";
+    public static final String ENEMY = "Enemy";
+
     private String name;
     private List<Entity> entities;
 

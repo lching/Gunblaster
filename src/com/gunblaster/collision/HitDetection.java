@@ -2,7 +2,7 @@ package com.gunblaster.collision;
 
 import com.gunblaster.entity.Entity;
 
-public abstract class Collision {
+public abstract class HitDetection {
 
     protected Entity owner;
 
@@ -10,7 +10,6 @@ public abstract class Collision {
         this.owner = owner;
     }
 
-    public abstract Entity collide(String type);
-    public abstract void collideResponse();
+    public abstract Entity hit(String type);
 
 }
