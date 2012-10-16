@@ -119,6 +119,8 @@ public class Entity {
         return null;
     }
 
+    public void hitResponse(GameContainer container, StateBasedGame game, int delta) { }
+
     public void setVisible(boolean visible) {
         if (!visible) {
             alpha = 0.0f;
@@ -158,6 +160,7 @@ public class Entity {
         for (Component comp : components) {
             comp.update(container, game, delta);
         }
+        hitResponse(container, game, delta);
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) {

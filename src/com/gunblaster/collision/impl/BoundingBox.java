@@ -7,11 +7,6 @@ import com.gunblaster.entity.Entity;
 
 public class BoundingBox extends HitDetection {
 
-    private boolean topCollide;
-    private boolean bottomCollide;
-    private boolean leftCollide;
-    private boolean rightCollide;
-
     @Override
     public Entity hit(String type) {
         List<Entity> entities = owner.getWorld().getEntities(type);
@@ -19,16 +14,21 @@ public class BoundingBox extends HitDetection {
         float ownerBottom = owner.getY() + owner.getHeight();
         float ownerLeft = owner.getX();
         float ownerRight = owner.getX() + owner.getWidth();
+        boolean outsideTop;
+        boolean outsideBottom;
+        boolean outsideLeft;
+        boolean outsideRight;
 
         for (Entity entity : entities) {
-            if (!owner.equals(entity)) {
-                topCollide = (ownerTop > entity.getY() + entity.getHeight());
-                bottomCollide = (ownerBottom < entity.getY());
-                leftCollide = (ownerLeft > entity.getX() + entity.getWidth());
-                rightCollide = (ownerRight < entity.getX());
 
-                if ( !(topCollide || bottomCollide ||
-                        leftCollide || rightCollide)) {
+            if (!owner.equals(entity)) {
+                outsideTop = (ownerTop > entity.getY() + entity.getHeight());
+                outsideBottom = (ownerBottom < entity.getY());
+                outsideLeft = (ownerLeft > entity.getX() + entity.getWidth());
+                outsideRight = (ownerRight < entity.getX());
+
+                if ( !(outsideTop || outsideBottom ||
+                        outsideLeft || outsideRight)) {
                     return entity;
                 }
             }

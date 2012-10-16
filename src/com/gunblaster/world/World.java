@@ -22,9 +22,13 @@ public class World {
     private List<Entity> entities;
     private List<Entity> addable;
     private List<Entity> removable;
+    private int width;
+    private int height;
 
-    public World(String name) {
+    public World(String name, int width, int height) {
         this.name = name;
+        this.width = width;
+        this.height = height;
         addable = new ArrayList<Entity>();
         removable = new ArrayList<Entity>();
         entities = new ArrayList<Entity>();
@@ -32,6 +36,14 @@ public class World {
 
     public String getName() {
         return name;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public void addEntity(Entity entity) {
