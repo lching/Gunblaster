@@ -9,7 +9,6 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -30,12 +29,12 @@ public class Entity {
     protected World world;
     protected Map<String, Animation> animations;
     protected int duration = 150;
-    protected String currentAnimation;
+    protected String currentAnimationName;
+    protected Animation currentAnimation;
     protected int width;
     protected int height;
 
     public Entity() {
-        position = new Vector2f(0, 0);
         scale = 1;
         speed = 0.1f;
         alpha = 1.0f;
@@ -162,23 +161,24 @@ public class Entity {
         return null;
     }
 
-    public void addAnimation(SpriteSheet sheet, String name, boolean loop, int frames) {
-        Animation animation = new Animation(false);
-        animation.setLooping(loop);
+    protected void setAnimation(String animation) {
+        currentAnimationName = animation;
 
-        for (int i = 0; i < frames; i++) {
-            animation.addFrame(sheet.getSprite(i, 0), duration);
+        if (animations.containsKey(currentAnimationName)) {
+            width = animations.get(currentAnimationName).getWidth();
+            height = animations.get(currentAnimationName).getHeight();
         }
-
-        animations.put(name, animation);
     }
 
-    public void setAnimation(String animation) {
-        currentAnimation = animation;
+    protected void restartAnimation(String name) {
+        if (animations.containsKey(name)) {
+            animations.get(name).restart();
+        }
+    }
 
-        if (animations.containsKey(currentAnimation)) {
-            width = animations.get(currentAnimation).getWidth();
-            height = animations.get(currentAnimation).getHeight();
+    protected void restartAllAnimation() {
+        for (Map.Entry<String, Animation> entry : animations.entrySet()) {
+            animations.get(entry.getKey()).restart();
         }
     }
 
@@ -186,26 +186,30 @@ public class Entity {
         world.removeEntity(this);
     }
 
-    public void updateAnimation(GameContainer container, int delta) {
-        if (animations.containsKey(currentAnimation)) {
-            animations.get(currentAnimation).update(delta);
-        }
-    }
+    public void updateAnimation(GameContainer container) { }
 
     public void update(GameContainer container, StateBasedGame game, int delta) {
+
         for (Component comp : components) {
             comp.update(container, game, delta);
         }
+
+        if (animations.containsKey(currentAnimationName)) {
+            animations.get(currentAnimationName).update(delta);
+        }
+
         hitResponse(container, game, delta);
-        updateAnimation(container, delta);
+        updateAnimation(container);
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) {
-        if (animations.containsKey(currentAnimation)) {
-            animations.get(currentAnimation).draw(getX(), getY(), getWidth(), getHeight());
+
+        if (animations.containsKey(currentAnimationName)) {
+            animations.get(currentAnimationName).draw(getX(), getY(), getWidth(), getHeight());
         } else if (image != null) {
             image.draw(position.getX(), position.getY(), scale);
         }
+
     }
 
 }

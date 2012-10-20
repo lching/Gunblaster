@@ -1,39 +1,34 @@
-package com.gunblaster.entity.model;
+package com.gunblaster.player;
 
-import java.util.Map;
-
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
 import com.gunblaster.collision.impl.BoundingBox;
-import com.gunblaster.component.player.BasicMoveControl;
+import com.gunblaster.component.impl.BasicMoveControl;
 import com.gunblaster.entity.Entity;
+import com.gunblaster.ship.Ship;
 import com.gunblaster.world.World;
 
 public class Player extends Entity {
 
     private boolean explode = false;
+    private Ship ship;
 
-    public Player(float x, float y) {
+    public Player(float x, float y, Ship ship) {
         super(x, y);
         setType(World.PLAYER);
         setSpeed(0.2f);
         setHitDetection(new BoundingBox());
-
-        try {
-            addAnimation(new SpriteSheet("data/images/player.png", 48, 48), "DEFAULT", false, 1);
-            addAnimation(new SpriteSheet("data/images/PlayerLeft.png", 48, 48), "LEFT", false, 2);
-            addAnimation(new SpriteSheet("data/images/PlayerRight.png", 48, 48), "RIGHT", false, 2);
-            addAnimation(new SpriteSheet("data/images/PlayerExplosion.png", 48, 48), "BOOM", false, 17);
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
+        this.ship = ship;
+        animations.putAll(this.ship.getAnimations());
     }
 
+    public void setShip(Ship ship) {
+        this.ship = ship;
+    }
+
+    @Override
     public void hitResponse(GameContainer container, StateBasedGame game, int delta) {
         Input input = container.getInput();
 
@@ -58,12 +53,11 @@ public class Player extends Entity {
     }
 
     @Override
-    public void updateAnimation(GameContainer container, int delta) {
-        super.updateAnimation(container, delta);
+    public void updateAnimation(GameContainer container) {
         Input input = container.getInput();
 
         if ( input.isKeyPressed(Input.KEY_Q) ) {
-            setAnimation("BOOM");
+            setAnimation(Ship.DEAD);
             explode = true;
         }
 
@@ -71,14 +65,13 @@ public class Player extends Entity {
             BasicMoveControl control = (BasicMoveControl) getComponent(BasicMoveControl.ID);
 
             if ( input.isKeyDown(control.getLeftKey()) ) {
-                setAnimation("LEFT");
+                setAnimation(Ship.LEFT);
             } else if ( input.isKeyDown(control.getRightKey()) ) {
-                setAnimation("RIGHT");
+                setAnimation(Ship.RIGHT);
             } else {
-                setAnimation("DEFAULT");
-                for (Map.Entry<String, Animation> entry : animations.entrySet()) {
-                    animations.get(entry.getKey()).restart();
-                }
+                setAnimation(Ship.DEFAULT);
+                restartAnimation(Ship.LEFT);
+                restartAnimation(Ship.RIGHT);
             }
         }
 

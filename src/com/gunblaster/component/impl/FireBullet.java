@@ -1,4 +1,4 @@
-package com.gunblaster.component.player;
+package com.gunblaster.component.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +8,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
+import com.gunblaster.bullet.Bullet;
 import com.gunblaster.component.Component;
-import com.gunblaster.entity.model.Bullet;
 
 public class FireBullet extends Component {
 
@@ -38,9 +38,9 @@ public class FireBullet extends Component {
 
         if (input.isKeyPressed(fireKey) || input.isKeyDown(fireKey)) {
             if (timer/bullet.getTimer() == 1) {
-                Bullet bullet = new Bullet(this.bullet);
+                Bullet bullet = this.bullet.copy();
                 bullet.setPosition(new Vector2f(owner.getPosition()));
-                bullet.setFired(true);
+                bullet.fired();
                 bullets.add(bullet);
 
                 owner.getWorld().addEntity(bullet);

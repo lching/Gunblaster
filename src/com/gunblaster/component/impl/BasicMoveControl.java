@@ -1,4 +1,4 @@
-package com.gunblaster.component.player;
+package com.gunblaster.component.impl;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
