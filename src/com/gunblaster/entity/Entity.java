@@ -1,11 +1,15 @@
 package com.gunblaster.entity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -24,6 +28,11 @@ public class Entity {
     protected String type;
     protected HitDetection hitDetection;
     protected World world;
+    protected Map<String, Animation> animations;
+    protected int duration = 150;
+    protected String currentAnimation;
+    protected int width;
+    protected int height;
 
     public Entity() {
         position = new Vector2f(0, 0);
@@ -31,6 +40,7 @@ public class Entity {
         speed = 0.1f;
         alpha = 1.0f;
         components = new ArrayList<Component>();
+        animations = new HashMap<String, Animation>();
     }
 
     public Entity(float x, float y) {
@@ -87,11 +97,11 @@ public class Entity {
     }
 
     public float getWidth() {
-        return image.getWidth();
+        return width;
     }
 
     public float getHeight() {
-        return image.getHeight();
+        return height;
     }
 
     public float getX() {
@@ -152,8 +162,34 @@ public class Entity {
         return null;
     }
 
+    public void addAnimation(SpriteSheet sheet, String name, boolean loop, int frames) {
+        Animation animation = new Animation(false);
+        animation.setLooping(loop);
+
+        for (int i = 0; i < frames; i++) {
+            animation.addFrame(sheet.getSprite(i, 0), duration);
+        }
+
+        animations.put(name, animation);
+    }
+
+    public void setAnimation(String animation) {
+        currentAnimation = animation;
+
+        if (animations.containsKey(currentAnimation)) {
+            width = animations.get(currentAnimation).getWidth();
+            height = animations.get(currentAnimation).getHeight();
+        }
+    }
+
     public void destroy() {
         world.removeEntity(this);
+    }
+
+    public void updateAnimation(GameContainer container, int delta) {
+        if (animations.containsKey(currentAnimation)) {
+            animations.get(currentAnimation).update(delta);
+        }
     }
 
     public void update(GameContainer container, StateBasedGame game, int delta) {
@@ -161,10 +197,15 @@ public class Entity {
             comp.update(container, game, delta);
         }
         hitResponse(container, game, delta);
+        updateAnimation(container, delta);
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) {
-        image.draw(position.getX(), position.getY(), scale);
+        if (animations.containsKey(currentAnimation)) {
+            animations.get(currentAnimation).draw(getX(), getY(), getWidth(), getHeight());
+        } else if (image != null) {
+            image.draw(position.getX(), position.getY(), scale);
+        }
     }
 
 }

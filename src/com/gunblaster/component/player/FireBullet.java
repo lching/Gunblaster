@@ -10,37 +10,36 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import com.gunblaster.component.Component;
 import com.gunblaster.entity.model.Bullet;
-import com.gunblaster.entity.model.Player;
 
 public class FireBullet extends Component {
 
+    public static final String ID = "FireBullet";
     private List<Bullet> bullets;
     private Bullet bullet;
-    private Bullet removable;
+    private int fireKey;
     private int timer;
 
-    public FireBullet(String id, Bullet bullet) {
-        this.id = id;
+    public FireBullet(int fireKey, Bullet bullet) {
+        id = ID;
         bullets = new ArrayList<Bullet>();
         this.bullet = bullet;
+        this.fireKey = fireKey;
         timer = bullet.getTimer();
     }
 
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) {
         Input input = container.getInput();
-        Player player = (Player) owner;
+        Bullet removable = null;
 
         if (timer <= bullet.getTimer()) {
             timer += delta;
         } 
 
-        if (input.isKeyPressed(player.getKeyFire()) || input.isKeyDown(player.getKeyFire())) {
+        if (input.isKeyPressed(fireKey) || input.isKeyDown(fireKey)) {
             if (timer/bullet.getTimer() == 1) {
-                Bullet bullet = new Bullet();
+                Bullet bullet = new Bullet(this.bullet);
                 bullet.setPosition(new Vector2f(owner.getPosition()));
-                bullet.setSpeed(this.bullet.getSpeed());
-                bullet.setImage(this.bullet.getImage());
                 bullet.setFired(true);
                 bullets.add(bullet);
 
